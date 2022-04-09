@@ -15,6 +15,8 @@ void reshape(int w, int h);
 
 void mouse(int mouse_button, int state, int x, int y);
 
+void motion(int x, int y);
+
 void initialize();
 
 int main(int argc, char **argv);
