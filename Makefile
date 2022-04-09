@@ -1,8 +1,8 @@
-spirograph: spirograph.o slider.o spirograph.h glut.h slider.h
-	g++ -g -w -Wall -o spirograph spirograph.o slider.o -lGL -lGLU -lglut
+spirograph: spirograph.o arrowButtons.o spirograph.h glut.h arrowButtons.h
+	g++ -g -w -Wall -o spirograph spirograph.o arrowButtons.o -lGL -lGLU -lglut
 
-spirograph.o: spirograph.cpp spirograph.h glut.h slider.h
+spirograph.o: spirograph.cpp spirograph.h glut.h arrowButtons.h
 	g++ -g -c spirograph.cpp
 
-slider.o: slider.cpp spirograph.h slider.h glut.h
-	g++ -g -c slider.cpp
+arrowButtons.o: arrowButtons.cpp spirograph.h arrowButtons.h glut.h
+	g++ -g -c arrowButtons.cpp
