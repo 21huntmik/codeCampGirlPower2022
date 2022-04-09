@@ -144,11 +144,11 @@ void display(void) {
 	innerUp.draw();
 	penUp.draw();
 	glColor3d(0, 0, 0);
-	drawText(98, 108, "Outer Radius");
+	drawText(98, 108, "Inner Radius");
 	std::string tmp = std::to_string(outerValue);
 	char const *outer = tmp.c_str();
 	drawText(142, 30,  outer);
-	drawText(295, 108, "Inner Radius");
+	drawText(295, 108, "Outer Radius");
 	tmp = std::to_string(innerValue);
 	char const *inner = tmp.c_str();
 	drawText(345, 30, inner);
