@@ -1,6 +1,7 @@
-# codeCampGirlPower2022
-Spirograph App \n
-Choose how big you want the outer circle \n
-Choose how big you want the inner circle \n
-Choose where the pen is in the inner circle \n
-Watch it draw :)
+#Spiro-Spot
+###Spirograph generator project for Girl Power Code Camp 2022
+#####Written in C++ with OpenGL and glut
+
+Use the arrow buttons to explore what happens when you change the radius of the outer circle, inner circle, and pen!
+
+Use math to create cool designs!
