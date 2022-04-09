@@ -7,11 +7,11 @@
 
 //Global Variables
 int colorMode; //one as default, white background. On key stroke, change to 0 (black) for DISCOOOOOO
-int colorNum = 1;
+int colorNum;
 
 double colors[3][3][3] = { /*3 normal mode colors*/ {{0.7, 0.6, 0.8 /*purple*/}, {0.98, 0.1, 0.4 /*pink*/}, {0.1, 0.03, 0.6 /*blue*/}}, /*3 disco colors*/ {{0.98, 0.012, 0.6 /*pink*/}, {0.77, 0.012, 0.988 /*purple*/}, {0.012, 0.941, 0.988 /*blue*/}}, /*3 more disco colors*/ {{0.255, 0.988, 0.012 /*green*/}, {0.973, 0.988, 0.012 /*yellow*/}, {0.067, 0.012, 0.988 /*blue2*/}}};
 
-TriangleButton outerUp(75, 48, 106.25, 95, 137.5, 48, 179);
+TriangleButton outerUp(75, 48, 106.25, 95, 137.5, 48, 145);
 
 TriangleButton innerUp(275, 48, 306.25, 95, 337.5, 48, 177);
 
@@ -201,7 +201,9 @@ void mouse(int mouse_button, int state, int x, int y) {
 	if (mouse_button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
 		if(colorMode == 1) {
 			colorMode = 0;
+			colorNum = 1;
 			glClearColor(0, 0, 0, 0);
+			
 		} else {
 			colorMode = 1;
 			glClearColor(1, 1, 1, 0);
@@ -219,7 +221,7 @@ int main(int argc, char **argv) {
 	glutInitWindowSize(screen_x, screen_y);
 	glutInitWindowPosition(0, 0);
 	
-	glutCreateWindow("Spirograph");
+	glutCreateWindow("Spiro-Spot");
 	
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
@@ -228,10 +230,12 @@ int main(int argc, char **argv) {
 
 	colorMode = 1;
 	
-	glColor3d(0,0,0);
+		glColor3d(0,0,0);
 	glClearColor(colorMode, colorMode, colorMode, 0);
 
 	glutMainLoop();
 	
+	engine->drop();
+
 	return 0;
 }
