@@ -234,8 +234,6 @@ int main(int argc, char **argv) {
 	glClearColor(colorMode, colorMode, colorMode, 0);
 
 	glutMainLoop();
-	
-	engine->drop();
 
 	return 0;
 }
