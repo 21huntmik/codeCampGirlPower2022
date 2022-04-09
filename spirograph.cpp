@@ -6,11 +6,16 @@
 #include "arrowButtons.h"
 
 //Global Variables
-TriangleButton outerUp(75, 48, 106.25, 95, 137.5, 48, 200);
+int colorMode; //one as default, white background. On key stroke, change to 0 (black) for DISCOOOOOO
+int colorNum = 1;
 
-TriangleButton innerUp(275, 48, 306.25, 95, 337.5, 48, 190);
+double colors[3][3][3] = { /*3 normal mode colors*/ {{0.7, 0.6, 0.8 /*purple*/}, {0.98, 0.1, 0.4 /*pink*/}, {0.1, 0.03, 0.6 /*blue*/}}, /*3 disco colors*/ {{0.98, 0.012, 0.6 /*pink*/}, {0.77, 0.012, 0.988 /*purple*/}, {0.012, 0.941, 0.988 /*blue*/}}, /*3 more disco colors*/ {{0.255, 0.988, 0.012 /*green*/}, {0.973, 0.988, 0.012 /*yellow*/}, {0.067, 0.012, 0.988 /*blue2*/}}};
 
-TriangleButton penUp(475, 48, 506.25, 95, 537.5, 48, 200);
+TriangleButton outerUp(75, 48, 106.25, 95, 137.5, 48, 179);
+
+TriangleButton innerUp(275, 48, 306.25, 95, 337.5, 48, 177);
+
+TriangleButton penUp(475, 48, 506.25, 95, 537.5, 48, 221);
 
 int outerValue = (int)outerUp.getValue();
 int innerValue = (int)innerUp.getValue();
@@ -64,15 +69,45 @@ void spirographRecursive(int R, int r, int t, int p, int i) {
 	if (i <= 50000) {
 		double x1 = (R + r) * cos(t) + p * cos((R*t+r*t)/r) + 350;
 		double y1 = (R + r) * sin(t) + p * sin((R*t+r*t)/r) + 425;
-		glColor3d(0.7, 0.6, 0.8);
+		if(colorMode == 1) {
+			glColor3d(colors[0][0][0], colors[0][0][1], colors[0][0][2]);
+		} else if(colorMode == 0) {	
+			if(colorNum == 1) {
+				glColor3d(colors[1][2][0], colors[1][2][1], colors[1][2][2]);
+				colorNum = 2;
+			} else if(colorNum == 2) {
+				glColor3d(colors[1][1][0], colors[1][1][1], colors[1][1][2]);
+				colorNum = 1;
+			}
+		}				
 		drawCircle(x1, y1, 1);
 		double x2 = (R + r) * cos(t) + (p + (p/2)) * cos(((R*t+r*t)/r)) + 350;
 		double y2 = (R + r) * sin(t) + (p + (p/2)) * sin(((R*t+r*t)/r)) + 425;
-		glColor3d(0.98, 0.1, 0.4);
+		if(colorMode == 1) {
+			glColor3d(colors[0][1][0], colors[0][1][1], colors[0][1][2]);
+		} else if(colorMode == 0) {
+			if(colorNum == 1) {
+				glColor3d(colors[1][0][0], colors[1][0][1], colors[1][0][2]);
+				colorNum = 2;
+			} else if(colorNum == 2) {
+				glColor3d(colors[2][0][0], colors[2][0][1], colors[2][0][2]);
+				colorNum = 1;
+			}
+		}
 		drawCircle(x2, y2, 1);
 		double x3 = (R +r) * cos(t) + (p - (p/2)) * cos(((R*t+r*t)/r)) + 350;
 		double y3 = (R +r) * sin(t) + (p - (p/2)) * sin(((R*t+r*t)/r)) + 425;
-		glColor3d(0.1, 0.03, 0.6);
+		if(colorMode == 1) {
+			glColor3d(colors[0][2][0], colors[0][2][1], colors[0][2][2]);
+		} else if(colorMode == 0) {
+			if(colorNum == 1) {
+				glColor3d(colors[2][1][0], colors[2][1][1], colors[2][1][2]);
+				colorNum = 2;
+			} else if(colorNum == 2) {
+				glColor3d(colors[2][2][0], colors[2][2][1], colors[2][2][2]);
+				colorNum = 1;
+			}
+		}
 		drawCircle(x3, y3, 1);
 		t += 1;
 		i += 1;
@@ -130,7 +165,7 @@ void keyboard(unsigned char c, int x, int y) {
 		case 27: //esc key
 			exit(0);
 			break;
-		//case 'key here':
+			
 		default:
 			return;
 	}
@@ -152,20 +187,25 @@ void mouse(int mouse_button, int state, int x, int y) {
 	y = screen_y - y;
 
 	if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		
+		outerUp.updateValue(x, y);
+		innerUp.updateValue(x, y);
+		penUp.updateValue(x,y);
+		outerValue = outerUp.getValue();
+		innerValue = innerUp.getValue();
+		penValue = penUp.getValue();
+		glutPostRedisplay();
 	}
 	if (mouse_button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 	
 	}
 	if (mouse_button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-		std::cout << "x: " << x << " y: " << y << std::endl;
-		outerUp.updateValue(x, y);
-		innerUp.updateValue(x, y);
-		penUp.updateValue(x, y);
-		outerValue = outerUp.getValue();
-		innerValue = innerUp.getValue();
-		penValue = penUp.getValue();
-		glutPostRedisplay();
+		if(colorMode == 1) {
+			colorMode = 0;
+			glClearColor(0, 0, 0, 0);
+		} else {
+			colorMode = 1;
+			glClearColor(1, 1, 1, 0);
+		}
 	}
 	if (mouse_button == GLUT_RIGHT_BUTTON && state == GLUT_UP) {
 	
@@ -185,9 +225,11 @@ int main(int argc, char **argv) {
 	glutKeyboardFunc(keyboard);
 	glutReshapeFunc(reshape);
 	glutMouseFunc(mouse);
+
+	colorMode = 1;
 	
 	glColor3d(0,0,0);
-	glClearColor(1,1,1,0);
+	glClearColor(colorMode, colorMode, colorMode, 0);
 
 	glutMainLoop();
 	
